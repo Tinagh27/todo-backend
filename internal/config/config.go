@@ -22,8 +22,7 @@ func Load() (*Config, error) {
 	v.AutomaticEnv()
 
 	if err := v.ReadInConfig(); err != nil {
-		var pathErr *os.PathError
-		if !errors.As(err, &pathErr) {
+		if _, ok := errors.AsType[*os.PathError](err); !ok {
 			return nil, fmt.Errorf("read config: %w", err)
 		}
 	}
